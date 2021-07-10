@@ -9,4 +9,8 @@ target_arch = target_machine.cpu_family() == 'x86_64' ? '-m64' : '-m32'
 
 install_dir = get_option('libdir') / 'wine'
 
+if get_option('use_nvidia_header')
+    add_project_arguments('-DUSE_NVIDIA_HEADER', language : 'c')
+endif
+
 subdir('src')

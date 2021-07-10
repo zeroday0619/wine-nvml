@@ -28,6 +28,8 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(nvml);
 
+#ifdef USE_NVIDIA_HEADER
+
 #pragma push_macro("__declspec")
 #undef __declspec
 #define __declspec(x) __cdecl
@@ -38,6 +40,136 @@ WINE_DEFAULT_DEBUG_CHANNEL(nvml);
 #include "nvml.h"
 
 #pragma pop_macro("__declspec")
+
+#else
+
+typedef unsigned int nvmlDeviceArchitecture_t;
+typedef unsigned int nvmlVgpuInstance_t;
+typedef unsigned int nvmlVgpuTypeId_t;
+
+typedef enum
+{
+    NVML_SUCCESS = 0,
+    NVML_ERROR_UNINITIALIZED = 1,
+    NVML_ERROR_INVALID_ARGUMENT = 2,
+    NVML_ERROR_NOT_SUPPORTED = 3,
+    NVML_ERROR_NO_PERMISSION = 4,
+    NVML_ERROR_ALREADY_INITIALIZED = 5,
+    NVML_ERROR_NOT_FOUND = 6,
+    NVML_ERROR_INSUFFICIENT_SIZE = 7,
+    NVML_ERROR_INSUFFICIENT_POWER = 8,
+    NVML_ERROR_DRIVER_NOT_LOADED = 9,
+    NVML_ERROR_TIMEOUT = 10,
+    NVML_ERROR_IRQ_ISSUE = 11,
+    NVML_ERROR_LIBRARY_NOT_FOUND = 12,
+    NVML_ERROR_FUNCTION_NOT_FOUND = 13,
+    NVML_ERROR_CORRUPTED_INFOROM = 14,
+    NVML_ERROR_GPU_IS_LOST = 15,
+    NVML_ERROR_RESET_REQUIRED = 16,
+    NVML_ERROR_OPERATING_SYSTEM = 17,
+    NVML_ERROR_LIB_RM_VERSION_MISMATCH = 18,
+    NVML_ERROR_IN_USE = 19,
+    NVML_ERROR_MEMORY = 20,
+    NVML_ERROR_NO_DATA = 21,
+    NVML_ERROR_VGPU_ECC_NOT_SUPPORTED = 22,
+    NVML_ERROR_INSUFFICIENT_RESOURCES = 23,
+    NVML_ERROR_UNKNOWN = 999,
+} nvmlReturn_t;
+
+typedef enum
+{
+    NVML_DETACH_GPU_KEEP = 0,
+    NVML_DETACH_GPU_REMOVE = 1,
+} nvmlDetachGpuState_t;
+
+typedef enum
+{
+    NVML_DRIVER_WDDM = 0,
+    NVML_DRIVER_WDM = 1,
+} nvmlDriverModel_t;
+
+typedef enum
+{
+    NVML_FEATURE_DISABLED = 0,
+    NVML_FEATURE_ENABLED = 1,
+} nvmlEnableState_t;
+
+typedef enum
+{
+    NVML_TOPOLOGY_INTERNAL = 0,
+    NVML_TOPOLOGY_SINGLE = 10,
+    NVML_TOPOLOGY_MULTIPLE = 20,
+    NVML_TOPOLOGY_HOSTBRIDGE = 30,
+    NVML_TOPOLOGY_NODE = 40,
+    NVML_TOPOLOGY_SYSTEM = 50,
+} nvmlGpuTopologyLevel_t;
+
+typedef enum
+{
+    NVML_PCIE_LINK_KEEP = 0,
+    NVML_PCIE_LINK_SHUT_DOWN = 1,
+} nvmlPcieLinkState_t;
+
+/* hacks and simplifications */
+
+typedef enum
+{
+    NVML_AFFINITY_SCOPE_NODE = 0,
+    NVML_AFFINITY_SCOPE_SOCKET = 1,
+} nvmlAffinityScope_t;
+
+/* enums */
+typedef int nvmlBrandType_t;
+typedef int nvmlClockId_t;
+typedef int nvmlClockType_t;
+typedef int nvmlComputeMode_t;
+typedef int nvmlEccCounterType_t;
+typedef int nvmlEncoderType_t;
+typedef int nvmlGpuOperationMode_t;
+typedef int nvmlGpuP2PCapsIndex_t;
+typedef int nvmlGpuP2PStatus_t;
+typedef int nvmlGpuVirtualizationMode_t;
+typedef int nvmlHostVgpuMode_t;
+typedef int nvmlInforomObject_t;
+typedef int nvmlMemoryErrorType_t;
+typedef int nvmlMemoryLocation_t;
+typedef int nvmlNvLinkCapability_t;
+typedef int nvmlNvLinkErrorCounter_t;
+typedef int nvmlPageRetirementCause_t;
+typedef int nvmlPcieUtilCounter_t;
+typedef int nvmlPerfPolicyType_t;
+typedef int nvmlPstates_t;
+typedef int nvmlRestrictedAPI_t;
+typedef int nvmlSamplingType_t;
+typedef int nvmlTemperatureSensors_t;
+typedef int nvmlTemperatureThresholds_t;
+typedef int nvmlValueType_t;
+
+/* structs */
+typedef void nvmlBAR1Memory_t;
+typedef void nvmlBridgeChipHierarchy_t;
+typedef void nvmlEccErrorCounts_t;
+typedef void nvmlEventData_t;
+typedef void nvmlFBCStats_t;
+typedef void nvmlFieldValue_t;
+typedef void nvmlGridLicensableFeatures_t;
+typedef void nvmlMemory_t;
+typedef void nvmlNvLinkUtilizationControl_t;
+typedef void nvmlPciInfo_t;
+typedef void nvmlRowRemapperHistogramValues_t;
+typedef void nvmlSample_t;
+typedef void nvmlUtilization_t;
+typedef void nvmlVgpuInstanceUtilizationSample_t;
+typedef void nvmlViolationTime_t;
+
+/* opaque pointers */
+typedef void *nvmlDevice_t;
+typedef void *nvmlEventSet_t;
+
+nvmlReturn_t __cdecl nvmlDeviceGetCount_v2(unsigned int *count);
+nvmlReturn_t __cdecl nvmlDeviceGetIndex(nvmlDevice_t device, unsigned int *index);
+
+#endif
 
 static void *libnvidia_ml_handle = NULL;
 
@@ -220,6 +352,13 @@ nvmlReturn_t __cdecl nvmlSystemGetNVMLVersion(char *version, unsigned int length
     return pnvmlSystemGetNVMLVersion(version, length);
 }
 
+#define STUB(func) nvmlReturn_t __cdecl func() { ERR(": not implemented\n"); return NVML_ERROR_FUNCTION_NOT_FOUND; }
+
+STUB(nvmlComputeInstanceDestroy)
+STUB(nvmlComputeInstanceGetInfo)
+STUB(nvmlComputeInstanceGetInfo_v2)
+STUB(nvmlDeviceClearAccountingPids)
+
 nvmlReturn_t __cdecl nvmlDeviceClearCpuAffinity(nvmlDevice_t device)
 {
     TRACE("(%p)\n", device);
@@ -229,6 +368,10 @@ nvmlReturn_t __cdecl nvmlDeviceClearCpuAffinity(nvmlDevice_t device)
 
     return ret == NVML_SUCCESS ? NVML_ERROR_NOT_SUPPORTED : ret;
 }
+
+STUB(nvmlDeviceClearEccErrorCounts)
+STUB(nvmlDeviceCreateGpuInstance)
+STUB(nvmlDeviceCreateGpuInstanceWithPlacement)
 
 nvmlReturn_t __cdecl nvmlDeviceDiscoverGpus(nvmlPciInfo_t *pciInfo)
 {
@@ -242,6 +385,8 @@ nvmlReturn_t __cdecl nvmlDeviceDiscoverGpus(nvmlPciInfo_t *pciInfo)
     return ret == NVML_SUCCESS ? NVML_ERROR_NOT_SUPPORTED : ret;
 }
 
+STUB(nvmlDeviceFreezeNvLinkUtilizationCounter)
+
 nvmlReturn_t __cdecl nvmlDeviceGetAPIRestriction(nvmlDevice_t device, nvmlRestrictedAPI_t apiType, nvmlEnableState_t *isRestricted)
 {
     TRACE("(%p, %u, %p)\n", device, apiType, isRestricted);
@@ -249,6 +394,11 @@ nvmlReturn_t __cdecl nvmlDeviceGetAPIRestriction(nvmlDevice_t device, nvmlRestri
         ? pnvmlDeviceGetAPIRestriction(device, apiType, isRestricted)
         : NVML_ERROR_FUNCTION_NOT_FOUND;
 }
+
+STUB(nvmlDeviceGetAccountingBufferSize)
+STUB(nvmlDeviceGetAccountingMode)
+STUB(nvmlDeviceGetAccountingPids)
+STUB(nvmlDeviceGetAccountingStats)
 
 nvmlReturn_t __cdecl nvmlDeviceGetActiveVgpus(nvmlDevice_t device, unsigned int *vgpuCount, nvmlVgpuInstance_t *vgpuInstances)
 {
@@ -273,6 +423,9 @@ nvmlReturn_t __cdecl nvmlDeviceGetArchitecture(nvmlDevice_t device, nvmlDeviceAr
         ? pnvmlDeviceGetArchitecture(device, arch)
         : NVML_ERROR_FUNCTION_NOT_FOUND;
 }
+
+STUB(nvmlDeviceGetAttributes)
+STUB(nvmlDeviceGetAttributes_v2)
 
 nvmlReturn_t __cdecl nvmlDeviceGetAutoBoostedClocksEnabled(nvmlDevice_t device, nvmlEnableState_t *isEnabled, nvmlEnableState_t *defaultIsEnabled)
 {
@@ -338,6 +491,8 @@ nvmlReturn_t __cdecl nvmlDeviceGetClockInfo(nvmlDevice_t device, nvmlClockType_t
         : NVML_ERROR_FUNCTION_NOT_FOUND;
 }
 
+STUB(nvmlDeviceGetComputeInstanceId)
+
 nvmlReturn_t __cdecl nvmlDeviceGetComputeMode(nvmlDevice_t device, nvmlComputeMode_t *mode)
 {
     TRACE("(%p, %p)\n", device, mode);
@@ -345,6 +500,9 @@ nvmlReturn_t __cdecl nvmlDeviceGetComputeMode(nvmlDevice_t device, nvmlComputeMo
         ? pnvmlDeviceGetComputeMode(device, mode)
         : NVML_ERROR_FUNCTION_NOT_FOUND;
 }
+
+STUB(nvmlDeviceGetComputeRunningProcesses)
+STUB(nvmlDeviceGetComputeRunningProcesses_v2)
 
 nvmlReturn_t __cdecl nvmlDeviceGetCount(unsigned int *deviceCount)
 {
@@ -450,6 +608,8 @@ nvmlReturn_t __cdecl nvmlDeviceGetDetailedEccErrors(nvmlDevice_t device, nvmlMem
         : NVML_ERROR_FUNCTION_NOT_FOUND;
 }
 
+STUB(nvmlDeviceGetDeviceHandleFromMigDeviceHandle)
+
 nvmlReturn_t __cdecl nvmlDeviceGetDisplayActive(nvmlDevice_t device, nvmlEnableState_t *isActive)
 {
     TRACE("(%p, %p)\n", device, isActive);
@@ -500,6 +660,8 @@ nvmlReturn_t __cdecl nvmlDeviceGetEncoderCapacity(nvmlDevice_t device, nvmlEncod
         : NVML_ERROR_FUNCTION_NOT_FOUND;
 }
 
+STUB(nvmlDeviceGetEncoderSessions)
+
 nvmlReturn_t __cdecl nvmlDeviceGetEncoderStats(nvmlDevice_t device, unsigned int *sessionCount, unsigned int *averageFps, unsigned int *averageLatency)
 {
     TRACE("(%p, %p, %p, %p)\n", device, sessionCount, averageFps, averageLatency);
@@ -523,6 +685,8 @@ nvmlReturn_t __cdecl nvmlDeviceGetEnforcedPowerLimit(nvmlDevice_t device, unsign
         ? pnvmlDeviceGetEnforcedPowerLimit(device, limit)
         : NVML_ERROR_FUNCTION_NOT_FOUND;
 }
+
+STUB(nvmlDeviceGetFBCSessions)
 
 nvmlReturn_t __cdecl nvmlDeviceGetFBCStats(nvmlDevice_t device, nvmlFBCStats_t *fbcStats)
 {
@@ -556,6 +720,13 @@ nvmlReturn_t __cdecl nvmlDeviceGetFieldValues(nvmlDevice_t device, int valuesCou
         : NVML_ERROR_FUNCTION_NOT_FOUND;
 }
 
+STUB(nvmlDeviceGetGpuInstanceById)
+STUB(nvmlDeviceGetGpuInstanceId)
+STUB(nvmlDeviceGetGpuInstancePossiblePlacements)
+STUB(nvmlDeviceGetGpuInstanceProfileInfo)
+STUB(nvmlDeviceGetGpuInstanceRemainingCapacity)
+STUB(nvmlDeviceGetGpuInstances)
+
 nvmlReturn_t __cdecl nvmlDeviceGetGpuOperationMode(nvmlDevice_t device, nvmlGpuOperationMode_t *current, nvmlGpuOperationMode_t *pending)
 {
     TRACE("(%p, %p, %p)\n", device, current, pending);
@@ -563,6 +734,9 @@ nvmlReturn_t __cdecl nvmlDeviceGetGpuOperationMode(nvmlDevice_t device, nvmlGpuO
         ? pnvmlDeviceGetGpuOperationMode(device, current, pending)
         : NVML_ERROR_FUNCTION_NOT_FOUND;
 }
+
+STUB(nvmlDeviceGetGraphicsRunningProcesses)
+STUB(nvmlDeviceGetGraphicsRunningProcesses_v2)
 
 nvmlReturn_t __cdecl nvmlDeviceGetGridLicensableFeatures(nvmlDevice_t device, nvmlGridLicensableFeatures_t *pGridLicensableFeatures)
 {
@@ -676,6 +850,8 @@ nvmlReturn_t __cdecl nvmlDeviceGetInforomVersion(nvmlDevice_t device, nvmlInforo
         : NVML_ERROR_FUNCTION_NOT_FOUND;
 }
 
+STUB(nvmlDeviceGetMPSComputeRunningProcesses)
+
 nvmlReturn_t __cdecl nvmlDeviceGetMaxClockInfo(nvmlDevice_t device, nvmlClockType_t type, unsigned int *clock)
 {
     TRACE("(%p, %u, %p)\n", device, type, clock);
@@ -683,6 +859,9 @@ nvmlReturn_t __cdecl nvmlDeviceGetMaxClockInfo(nvmlDevice_t device, nvmlClockTyp
         ? pnvmlDeviceGetMaxClockInfo(device, type, clock)
         : NVML_ERROR_FUNCTION_NOT_FOUND;
 }
+
+STUB(nvmlDeviceGetMaxCustomerBoostClock)
+STUB(nvmlDeviceGetMaxMigDeviceCount)
 
 nvmlReturn_t __cdecl nvmlDeviceGetMaxPcieLinkGeneration(nvmlDevice_t device, unsigned int *maxLinkGen)
 {
@@ -727,6 +906,8 @@ nvmlReturn_t __cdecl nvmlDeviceGetMemoryInfo(nvmlDevice_t device, nvmlMemory_t *
         ? pnvmlDeviceGetMemoryInfo(device, memory)
         : NVML_ERROR_FUNCTION_NOT_FOUND;
 }
+
+STUB(nvmlDeviceGetMigDeviceHandleByIndex)
 
 nvmlReturn_t __cdecl nvmlDeviceGetMigMode(nvmlDevice_t device, unsigned int *currentMode, unsigned int *pendingMode)
 {
@@ -952,6 +1133,8 @@ nvmlReturn_t __cdecl nvmlDeviceGetPowerUsage(nvmlDevice_t device, unsigned int *
         : NVML_ERROR_FUNCTION_NOT_FOUND;
 }
 
+STUB(nvmlDeviceGetProcessUtilization)
+
 nvmlReturn_t __cdecl nvmlDeviceGetRemappedRows(nvmlDevice_t device, unsigned int *corrRows, unsigned int *uncRows, unsigned int *isPending, unsigned int *failureOccurred)
 {
     TRACE("(%p, %p, %p, %p, %p)\n", device, corrRows, uncRows, isPending, failureOccurred);
@@ -1132,6 +1315,9 @@ nvmlReturn_t __cdecl nvmlDeviceGetVbiosVersion(nvmlDevice_t device, char *versio
         : NVML_ERROR_FUNCTION_NOT_FOUND;
 }
 
+STUB(nvmlDeviceGetVgpuMetadata)
+STUB(nvmlDeviceGetVgpuProcessUtilization)
+
 nvmlReturn_t __cdecl nvmlDeviceGetVgpuUtilization(nvmlDevice_t device, unsigned long long lastSeenTimeStamp, nvmlValueType_t *sampleValType, unsigned int *vgpuInstanceSamplesCount, nvmlVgpuInstanceUtilizationSample_t *utilizationSamples)
 {
     TRACE("(%p, %llu, %p, %p, %p)\n", device, lastSeenTimeStamp, sampleValType, vgpuInstanceSamplesCount, utilizationSamples);
@@ -1155,6 +1341,8 @@ nvmlReturn_t __cdecl nvmlDeviceGetVirtualizationMode(nvmlDevice_t device, nvmlGp
         ? pnvmlDeviceGetVirtualizationMode(device, pVirtualMode)
         : NVML_ERROR_FUNCTION_NOT_FOUND;
 }
+
+STUB(nvmlDeviceIsMigDeviceHandle)
 
 nvmlReturn_t __cdecl nvmlDeviceModifyDrainState(nvmlPciInfo_t *pciInfo, nvmlEnableState_t newState)
 {
@@ -1220,6 +1408,16 @@ nvmlReturn_t __cdecl nvmlDeviceRemoveGpu_v2(nvmlPciInfo_t *pciInfo, nvmlDetachGp
     return ret == NVML_SUCCESS ? NVML_ERROR_NOT_SUPPORTED : ret;
 }
 
+STUB(nvmlDeviceResetApplicationsClocks)
+STUB(nvmlDeviceResetGpuLockedClocks)
+STUB(nvmlDeviceResetMemoryLockedClocks)
+STUB(nvmlDeviceResetNvLinkErrorCounters)
+STUB(nvmlDeviceResetNvLinkUtilizationCounter)
+STUB(nvmlDeviceSetAPIRestriction)
+STUB(nvmlDeviceSetAccountingMode)
+STUB(nvmlDeviceSetApplicationsClocks)
+STUB(nvmlDeviceSetAutoBoostedClocksEnabled)
+
 nvmlReturn_t __cdecl nvmlDeviceSetComputeMode(nvmlDevice_t device, nvmlComputeMode_t mode)
 {
     TRACE("(%p, %u)\n", device, mode);
@@ -1238,6 +1436,8 @@ nvmlReturn_t __cdecl nvmlDeviceSetCpuAffinity(nvmlDevice_t device)
     return ret == NVML_SUCCESS ? NVML_ERROR_NOT_SUPPORTED : ret;
 }
 
+STUB(nvmlDeviceSetDefaultAutoBoostedClocksEnabled)
+
 nvmlReturn_t __cdecl nvmlDeviceSetDriverModel(nvmlDevice_t device, nvmlDriverModel_t driverModel, unsigned int flags)
 {
     TRACE("(%p, %u, %u)\n", device, driverModel, flags);
@@ -1250,6 +1450,13 @@ nvmlReturn_t __cdecl nvmlDeviceSetDriverModel(nvmlDevice_t device, nvmlDriverMod
     return ret == NVML_SUCCESS ? NVML_ERROR_NOT_SUPPORTED : ret;
 }
 
+STUB(nvmlDeviceSetEccMode)
+STUB(nvmlDeviceSetGpuLockedClocks)
+STUB(nvmlDeviceSetGpuOperationMode)
+STUB(nvmlDeviceSetMemoryLockedClocks)
+STUB(nvmlDeviceSetMigMode)
+STUB(nvmlDeviceSetNvLinkUtilizationControl)
+
 nvmlReturn_t __cdecl nvmlDeviceSetPersistenceMode(nvmlDevice_t device, nvmlEnableState_t mode)
 {
     TRACE("(%p, %u)\n", device, mode);
@@ -1261,6 +1468,11 @@ nvmlReturn_t __cdecl nvmlDeviceSetPersistenceMode(nvmlDevice_t device, nvmlEnabl
 
     return ret == NVML_SUCCESS ? NVML_ERROR_NOT_SUPPORTED : ret;
 }
+
+STUB(nvmlDeviceSetPowerManagementLimit)
+STUB(nvmlDeviceSetTemperatureThreshold)
+STUB(nvmlDeviceSetVirtualizationMode)
+STUB(nvmlDeviceValidateInforom)
 
 nvmlReturn_t __cdecl nvmlEventSetCreate(nvmlEventSet_t *set)
 {
@@ -1294,6 +1506,23 @@ nvmlReturn_t __cdecl nvmlEventSetWait_v2(nvmlEventSet_t set, nvmlEventData_t *da
         : NVML_ERROR_FUNCTION_NOT_FOUND;
 }
 
+STUB(nvmlGetBlacklistDeviceCount)
+STUB(nvmlGetBlacklistDeviceInfoByIndex)
+STUB(nvmlGetExcludedDeviceCount)
+STUB(nvmlGetExcludedDeviceInfoByIndex)
+STUB(nvmlGetVgpuCompatibility)
+STUB(nvmlGetVgpuVersion)
+STUB(nvmlGpuInstanceCreateComputeInstance)
+STUB(nvmlGpuInstanceDestroy)
+STUB(nvmlGpuInstanceGetComputeInstanceById)
+STUB(nvmlGpuInstanceGetComputeInstanceProfileInfo)
+STUB(nvmlGpuInstanceGetComputeInstanceRemainingCapacity)
+STUB(nvmlGpuInstanceGetComputeInstances)
+STUB(nvmlGpuInstanceGetInfo)
+STUB(nvmlSetVgpuVersion)
+STUB(nvmlSystemGetHicVersion)
+STUB(nvmlSystemGetProcessName)
+
 nvmlReturn_t __cdecl nvmlSystemGetTopologyGpuSet(unsigned int cpuNumber, unsigned int *count, nvmlDevice_t *deviceArray)
 {
     TRACE("(%u, %p, %p)\n", cpuNumber, count, deviceArray);
@@ -1305,6 +1534,50 @@ nvmlReturn_t __cdecl nvmlSystemGetTopologyGpuSet(unsigned int cpuNumber, unsigne
 
     return ret == NVML_SUCCESS ? NVML_ERROR_NOT_SUPPORTED : ret;
 }
+
+STUB(nvmlUnitGetCount)
+STUB(nvmlUnitGetDevices)
+STUB(nvmlUnitGetFanSpeedInfo)
+STUB(nvmlUnitGetHandleByIndex)
+STUB(nvmlUnitGetLedState)
+STUB(nvmlUnitGetPsuInfo)
+STUB(nvmlUnitGetTemperature)
+STUB(nvmlUnitGetUnitInfo)
+STUB(nvmlUnitSetLedState)
+STUB(nvmlVgpuInstanceClearAccountingPids)
+STUB(nvmlVgpuInstanceGetAccountingMode)
+STUB(nvmlVgpuInstanceGetAccountingPids)
+STUB(nvmlVgpuInstanceGetAccountingStats)
+STUB(nvmlVgpuInstanceGetEccMode)
+STUB(nvmlVgpuInstanceGetEncoderCapacity)
+STUB(nvmlVgpuInstanceGetEncoderSessions)
+STUB(nvmlVgpuInstanceGetEncoderStats)
+STUB(nvmlVgpuInstanceGetFBCSessions)
+STUB(nvmlVgpuInstanceGetFBCStats)
+STUB(nvmlVgpuInstanceGetFbUsage)
+STUB(nvmlVgpuInstanceGetFrameRateLimit)
+STUB(nvmlVgpuInstanceGetGpuInstanceId)
+STUB(nvmlVgpuInstanceGetLicenseStatus)
+STUB(nvmlVgpuInstanceGetMdevUUID)
+STUB(nvmlVgpuInstanceGetMetadata)
+STUB(nvmlVgpuInstanceGetType)
+STUB(nvmlVgpuInstanceGetUUID)
+STUB(nvmlVgpuInstanceGetVmDriverVersion)
+STUB(nvmlVgpuInstanceGetVmID)
+STUB(nvmlVgpuInstanceSetEncoderCapacity)
+STUB(nvmlVgpuTypeGetClass)
+STUB(nvmlVgpuTypeGetDeviceID)
+STUB(nvmlVgpuTypeGetFrameRateLimit)
+STUB(nvmlVgpuTypeGetFramebufferSize)
+STUB(nvmlVgpuTypeGetGpuInstanceProfileId)
+STUB(nvmlVgpuTypeGetLicense)
+STUB(nvmlVgpuTypeGetMaxInstances)
+STUB(nvmlVgpuTypeGetMaxInstancesPerVm)
+STUB(nvmlVgpuTypeGetName)
+STUB(nvmlVgpuTypeGetNumDisplayHeads)
+STUB(nvmlVgpuTypeGetResolution)
+
+#undef STUB
 
 static BOOL load_nvml(void)
 {

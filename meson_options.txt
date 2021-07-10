@@ -1,1 +1,2 @@
 option('old_install_layout', type : 'boolean', value : false)
+option('use_nvidia_header', type : 'boolean', value : true)

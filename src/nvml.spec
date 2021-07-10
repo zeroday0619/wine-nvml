@@ -1,23 +1,23 @@
-# @ stub nvmlComputeInstanceDestroy
-# @ stub nvmlComputeInstanceGetInfo
-# @ stub nvmlComputeInstanceGetInfo_v2
-# @ stub nvmlDeviceClearAccountingPids
+@ cdecl nvmlComputeInstanceDestroy(ptr)
+@ cdecl nvmlComputeInstanceGetInfo(ptr ptr)
+@ cdecl nvmlComputeInstanceGetInfo_v2(ptr ptr)
+@ cdecl nvmlDeviceClearAccountingPids(ptr)
 @ cdecl nvmlDeviceClearCpuAffinity(ptr)
-# @ stub nvmlDeviceClearEccErrorCounts
-# @ stub nvmlDeviceCreateGpuInstance
-# @ stub nvmlDeviceCreateGpuInstanceWithPlacement
+@ cdecl nvmlDeviceClearEccErrorCounts(ptr ptr)
+@ cdecl nvmlDeviceCreateGpuInstance(ptr long ptr)
+@ cdecl nvmlDeviceCreateGpuInstanceWithPlacement(ptr long ptr ptr)
 @ cdecl nvmlDeviceDiscoverGpus(ptr)
-# @ stub nvmlDeviceFreezeNvLinkUtilizationCounter
+@ cdecl nvmlDeviceFreezeNvLinkUtilizationCounter(ptr long long long)
 @ cdecl nvmlDeviceGetAPIRestriction(ptr long ptr)
-# @ stub nvmlDeviceGetAccountingBufferSize
-# @ stub nvmlDeviceGetAccountingMode
-# @ stub nvmlDeviceGetAccountingPids
-# @ stub nvmlDeviceGetAccountingStats
+@ cdecl nvmlDeviceGetAccountingBufferSize(ptr ptr)
+@ cdecl nvmlDeviceGetAccountingMode(ptr ptr)
+@ cdecl nvmlDeviceGetAccountingPids(ptr ptr ptr)
+@ cdecl nvmlDeviceGetAccountingStats(ptr long ptr)
 @ cdecl nvmlDeviceGetActiveVgpus(ptr ptr ptr)
 @ cdecl nvmlDeviceGetApplicationsClock(ptr long ptr)
 @ cdecl nvmlDeviceGetArchitecture(ptr ptr)
-# @ stub nvmlDeviceGetAttributes
-# @ stub nvmlDeviceGetAttributes_v2
+@ cdecl nvmlDeviceGetAttributes(ptr ptr)
+@ cdecl nvmlDeviceGetAttributes_v2(ptr ptr)
 @ cdecl nvmlDeviceGetAutoBoostedClocksEnabled(ptr ptr ptr)
 @ cdecl nvmlDeviceGetBAR1MemoryInfo(ptr ptr)
 @ cdecl nvmlDeviceGetBoardId(ptr ptr)
@@ -26,10 +26,10 @@
 @ cdecl nvmlDeviceGetBridgeChipInfo(ptr ptr)
 @ cdecl nvmlDeviceGetClock(ptr long long ptr)
 @ cdecl nvmlDeviceGetClockInfo(ptr long ptr)
-# @ stub nvmlDeviceGetComputeInstanceId
+@ cdecl nvmlDeviceGetComputeInstanceId(ptr ptr)
 @ cdecl nvmlDeviceGetComputeMode(ptr ptr)
-# @ stub nvmlDeviceGetComputeRunningProcesses
-# @ stub nvmlDeviceGetComputeRunningProcesses_v2
+@ cdecl nvmlDeviceGetComputeRunningProcesses(ptr ptr ptr)
+@ cdecl nvmlDeviceGetComputeRunningProcesses_v2(ptr ptr ptr)
 @ cdecl nvmlDeviceGetCount(ptr)
 @ cdecl nvmlDeviceGetCount_v2(ptr)
 @ cdecl nvmlDeviceGetCpuAffinity(ptr long ptr)
@@ -42,30 +42,30 @@
 @ cdecl nvmlDeviceGetDecoderUtilization(ptr ptr ptr)
 @ cdecl nvmlDeviceGetDefaultApplicationsClock(ptr long ptr)
 @ cdecl nvmlDeviceGetDetailedEccErrors(ptr long long ptr)
-# @ stub nvmlDeviceGetDeviceHandleFromMigDeviceHandle
+@ cdecl nvmlDeviceGetDeviceHandleFromMigDeviceHandle(ptr ptr)
 @ cdecl nvmlDeviceGetDisplayActive(ptr ptr)
 @ cdecl nvmlDeviceGetDisplayMode(ptr ptr)
 @ cdecl nvmlDeviceGetDriverModel(ptr ptr ptr)
 @ cdecl nvmlDeviceGetEccMode(ptr ptr ptr)
 @ cdecl nvmlDeviceGetEncoderCapacity(ptr long ptr)
-# @ stub nvmlDeviceGetEncoderSessions
+@ cdecl nvmlDeviceGetEncoderSessions(ptr ptr ptr)
 @ cdecl nvmlDeviceGetEncoderStats(ptr ptr ptr ptr)
 @ cdecl nvmlDeviceGetEncoderUtilization(ptr ptr ptr)
 @ cdecl nvmlDeviceGetEnforcedPowerLimit(ptr ptr)
-# @ stub nvmlDeviceGetFBCSessions
+@ cdecl nvmlDeviceGetFBCSessions(ptr ptr ptr)
 @ cdecl nvmlDeviceGetFBCStats(ptr ptr)
 @ cdecl nvmlDeviceGetFanSpeed(ptr ptr)
 @ cdecl nvmlDeviceGetFanSpeed_v2(ptr long ptr)
 @ cdecl nvmlDeviceGetFieldValues(ptr long ptr)
-# @ stub nvmlDeviceGetGpuInstanceById
-# @ stub nvmlDeviceGetGpuInstanceId
-# @ stub nvmlDeviceGetGpuInstancePossiblePlacements
-# @ stub nvmlDeviceGetGpuInstanceProfileInfo
-# @ stub nvmlDeviceGetGpuInstanceRemainingCapacity
-# @ stub nvmlDeviceGetGpuInstances
+@ cdecl nvmlDeviceGetGpuInstanceById(ptr long ptr)
+@ cdecl nvmlDeviceGetGpuInstanceId(ptr ptr)
+@ cdecl nvmlDeviceGetGpuInstancePossiblePlacements(ptr long ptr ptr)
+@ cdecl nvmlDeviceGetGpuInstanceProfileInfo(ptr long ptr)
+@ cdecl nvmlDeviceGetGpuInstanceRemainingCapacity(ptr long ptr)
+@ cdecl nvmlDeviceGetGpuInstances(ptr long ptr ptr)
 @ cdecl nvmlDeviceGetGpuOperationMode(ptr ptr ptr)
-# @ stub nvmlDeviceGetGraphicsRunningProcesses
-# @ stub nvmlDeviceGetGraphicsRunningProcesses_v2
+@ cdecl nvmlDeviceGetGraphicsRunningProcesses(ptr ptr ptr)
+@ cdecl nvmlDeviceGetGraphicsRunningProcesses_v2(ptr ptr ptr)
 @ cdecl nvmlDeviceGetGridLicensableFeatures(ptr ptr)
 @ cdecl nvmlDeviceGetGridLicensableFeatures_v2(ptr ptr)
 @ cdecl nvmlDeviceGetGridLicensableFeatures_v3(ptr ptr)
@@ -80,23 +80,23 @@
 @ cdecl nvmlDeviceGetInforomConfigurationChecksum(ptr ptr)
 @ cdecl nvmlDeviceGetInforomImageVersion(ptr ptr long)
 @ cdecl nvmlDeviceGetInforomVersion(ptr long ptr long)
-# @ stub nvmlDeviceGetMPSComputeRunningProcesses
+@ cdecl nvmlDeviceGetMPSComputeRunningProcesses(ptr ptr ptr)
 @ cdecl nvmlDeviceGetMaxClockInfo(ptr long ptr)
-# @ stub nvmlDeviceGetMaxCustomerBoostClock
-# @ stub nvmlDeviceGetMaxMigDeviceCount
+@ cdecl nvmlDeviceGetMaxCustomerBoostClock(ptr long ptr)
+@ cdecl nvmlDeviceGetMaxMigDeviceCount(ptr ptr)
 @ cdecl nvmlDeviceGetMaxPcieLinkGeneration(ptr ptr)
 @ cdecl nvmlDeviceGetMaxPcieLinkWidth(ptr ptr)
 @ cdecl nvmlDeviceGetMemoryAffinity(ptr long ptr long)
 @ cdecl nvmlDeviceGetMemoryErrorCounter(ptr long long long ptr)
 @ cdecl nvmlDeviceGetMemoryInfo(ptr ptr)
-# @ stub nvmlDeviceGetMigDeviceHandleByIndex
+@ cdecl nvmlDeviceGetMigDeviceHandleByIndex(ptr long ptr)
 @ cdecl nvmlDeviceGetMigMode(ptr ptr ptr)
 @ cdecl nvmlDeviceGetMinorNumber(ptr ptr)
 @ cdecl nvmlDeviceGetMultiGpuBoard(ptr ptr)
 @ cdecl nvmlDeviceGetName(ptr ptr long)
 @ cdecl nvmlDeviceGetNvLinkCapability(ptr long long ptr)
 @ cdecl nvmlDeviceGetNvLinkErrorCounter(ptr long long ptr)
-# @ stub nvmlDeviceGetNvLinkRemotePciInfo
+@ cdecl nvmlDeviceGetNvLinkRemotePciInfo(ptr long ptr)
 @ cdecl nvmlDeviceGetNvLinkRemotePciInfo_v2(ptr long ptr)
 @ cdecl nvmlDeviceGetNvLinkState(ptr long ptr)
 @ cdecl nvmlDeviceGetNvLinkUtilizationControl(ptr long long ptr)
@@ -117,7 +117,7 @@
 @ cdecl nvmlDeviceGetPowerManagementMode(ptr ptr)
 @ cdecl nvmlDeviceGetPowerState(ptr ptr)
 @ cdecl nvmlDeviceGetPowerUsage(ptr ptr)
-# @ stub nvmlDeviceGetProcessUtilization
+@ cdecl nvmlDeviceGetProcessUtilization(ptr ptr ptr int64)
 @ cdecl nvmlDeviceGetRemappedRows(ptr ptr ptr ptr ptr)
 @ cdecl nvmlDeviceGetRetiredPages(ptr long ptr ptr)
 @ cdecl nvmlDeviceGetRetiredPagesPendingStatus(ptr ptr)
@@ -139,111 +139,111 @@
 @ cdecl nvmlDeviceGetUUID(ptr ptr long)
 @ cdecl nvmlDeviceGetUtilizationRates(ptr ptr)
 @ cdecl nvmlDeviceGetVbiosVersion(ptr ptr long)
-# @ stub nvmlDeviceGetVgpuMetadata
-# @ stub nvmlDeviceGetVgpuProcessUtilization
+@ cdecl nvmlDeviceGetVgpuMetadata(ptr ptr ptr)
+@ cdecl nvmlDeviceGetVgpuProcessUtilization(ptr int64 ptr ptr)
 @ cdecl nvmlDeviceGetVgpuUtilization(ptr int64 ptr ptr ptr)
 @ cdecl nvmlDeviceGetViolationStatus(ptr long ptr)
 @ cdecl nvmlDeviceGetVirtualizationMode(ptr ptr)
-# @ stub nvmlDeviceIsMigDeviceHandle
+@ cdecl nvmlDeviceIsMigDeviceHandle(ptr ptr)
 @ cdecl nvmlDeviceModifyDrainState(ptr long)
 @ cdecl nvmlDeviceOnSameBoard(ptr ptr ptr)
 @ cdecl nvmlDeviceQueryDrainState(ptr ptr)
 @ cdecl nvmlDeviceRegisterEvents(ptr int64 ptr)
 @ cdecl nvmlDeviceRemoveGpu(ptr)
 @ cdecl nvmlDeviceRemoveGpu_v2(ptr long long)
-# @ stub nvmlDeviceResetApplicationsClocks
-# @ stub nvmlDeviceResetGpuLockedClocks
-# @ stub nvmlDeviceResetMemoryLockedClocks
-# @ stub nvmlDeviceResetNvLinkErrorCounters
-# @ stub nvmlDeviceResetNvLinkUtilizationCounter
-# @ stub nvmlDeviceSetAPIRestriction
-# @ stub nvmlDeviceSetAccountingMode
-# @ stub nvmlDeviceSetApplicationsClocks
-# @ stub nvmlDeviceSetAutoBoostedClocksEnabled
+@ cdecl nvmlDeviceResetApplicationsClocks(ptr)
+@ cdecl nvmlDeviceResetGpuLockedClocks(ptr)
+@ cdecl nvmlDeviceResetMemoryLockedClocks(ptr)
+@ cdecl nvmlDeviceResetNvLinkErrorCounters(ptr long)
+@ cdecl nvmlDeviceResetNvLinkUtilizationCounter(ptr long long)
+@ cdecl nvmlDeviceSetAPIRestriction(ptr long long)
+@ cdecl nvmlDeviceSetAccountingMode(ptr long)
+@ cdecl nvmlDeviceSetApplicationsClocks(ptr long long)
+@ cdecl nvmlDeviceSetAutoBoostedClocksEnabled(ptr long)
 @ cdecl nvmlDeviceSetComputeMode(ptr long)
 @ cdecl nvmlDeviceSetCpuAffinity(ptr)
-# @ stub nvmlDeviceSetDefaultAutoBoostedClocksEnabled
+@ cdecl nvmlDeviceSetDefaultAutoBoostedClocksEnabled(ptr long long)
 @ cdecl nvmlDeviceSetDriverModel(ptr long long)
-# @ stub nvmlDeviceSetEccMode
-# @ stub nvmlDeviceSetGpuLockedClocks
-# @ stub nvmlDeviceSetGpuOperationMode
-# @ stub nvmlDeviceSetMemoryLockedClocks
-# @ stub nvmlDeviceSetMigMode
-# @ stub nvmlDeviceSetNvLinkUtilizationControl
+@ cdecl nvmlDeviceSetEccMode(ptr long)
+@ cdecl nvmlDeviceSetGpuLockedClocks(ptr long long)
+@ cdecl nvmlDeviceSetGpuOperationMode(ptr long)
+@ cdecl nvmlDeviceSetMemoryLockedClocks(ptr long long)
+@ cdecl nvmlDeviceSetMigMode(ptr long ptr)
+@ cdecl nvmlDeviceSetNvLinkUtilizationControl(ptr long long ptr long)
 @ cdecl nvmlDeviceSetPersistenceMode(ptr long)
-# @ stub nvmlDeviceSetPowerManagementLimit
-# @ stub nvmlDeviceSetTemperatureThreshold
-# @ stub nvmlDeviceSetVirtualizationMode
-# @ stub nvmlDeviceValidateInforom
+@ cdecl nvmlDeviceSetPowerManagementLimit(ptr long)
+@ cdecl nvmlDeviceSetTemperatureThreshold(ptr long ptr)
+@ cdecl nvmlDeviceSetVirtualizationMode(ptr long)
+@ cdecl nvmlDeviceValidateInforom(ptr)
 @ cdecl nvmlErrorString(long)
 @ cdecl nvmlEventSetCreate(ptr)
 @ cdecl nvmlEventSetFree(ptr)
 @ cdecl nvmlEventSetWait(ptr long long)
 @ cdecl nvmlEventSetWait_v2(ptr ptr long)
-# @ stub nvmlGetBlacklistDeviceCount
-# @ stub nvmlGetBlacklistDeviceInfoByIndex
-# @ stub nvmlGetExcludedDeviceCount
-# @ stub nvmlGetExcludedDeviceInfoByIndex
-# @ stub nvmlGetVgpuCompatibility
-# @ stub nvmlGetVgpuVersion
-# @ stub nvmlGpuInstanceCreateComputeInstance
-# @ stub nvmlGpuInstanceDestroy
-# @ stub nvmlGpuInstanceGetComputeInstanceById
-# @ stub nvmlGpuInstanceGetComputeInstanceProfileInfo
-# @ stub nvmlGpuInstanceGetComputeInstanceRemainingCapacity
-# @ stub nvmlGpuInstanceGetComputeInstances
-# @ stub nvmlGpuInstanceGetInfo
+@ cdecl nvmlGetBlacklistDeviceCount(ptr)
+@ cdecl nvmlGetBlacklistDeviceInfoByIndex(long ptr)
+@ cdecl nvmlGetExcludedDeviceCount(ptr)
+@ cdecl nvmlGetExcludedDeviceInfoByIndex(long ptr)
+@ cdecl nvmlGetVgpuCompatibility(ptr ptr ptr)
+@ cdecl nvmlGetVgpuVersion(ptr ptr)
+@ cdecl nvmlGpuInstanceCreateComputeInstance(ptr long ptr)
+@ cdecl nvmlGpuInstanceDestroy(ptr)
+@ cdecl nvmlGpuInstanceGetComputeInstanceById(ptr long ptr)
+@ cdecl nvmlGpuInstanceGetComputeInstanceProfileInfo(ptr long long ptr)
+@ cdecl nvmlGpuInstanceGetComputeInstanceRemainingCapacity(ptr long ptr)
+@ cdecl nvmlGpuInstanceGetComputeInstances(ptr long ptr ptr)
+@ cdecl nvmlGpuInstanceGetInfo(ptr ptr)
 @ cdecl nvmlInit()
 @ cdecl nvmlInitWithFlags(long)
 @ cdecl nvmlInit_v2()
 @ cdecl nvmlInternalGetExportTable(ptr ptr)
-# @ stub nvmlSetVgpuVersion
+@ cdecl nvmlSetVgpuVersion(ptr)
 @ cdecl nvmlShutdown()
 @ cdecl nvmlSystemGetCudaDriverVersion(ptr)
 @ cdecl nvmlSystemGetCudaDriverVersion_v2(ptr)
 @ cdecl nvmlSystemGetDriverVersion(ptr long)
-# @ stub nvmlSystemGetHicVersion
+@ cdecl nvmlSystemGetHicVersion(ptr ptr)
 @ cdecl nvmlSystemGetNVMLVersion(ptr long)
-# @ stub nvmlSystemGetProcessName
+@ cdecl nvmlSystemGetProcessName(long ptr long)
 @ cdecl nvmlSystemGetTopologyGpuSet(long ptr ptr)
-# @ stub nvmlUnitGetCount
-# @ stub nvmlUnitGetDevices
-# @ stub nvmlUnitGetFanSpeedInfo
-# @ stub nvmlUnitGetHandleByIndex
-# @ stub nvmlUnitGetLedState
-# @ stub nvmlUnitGetPsuInfo
-# @ stub nvmlUnitGetTemperature
-# @ stub nvmlUnitGetUnitInfo
-# @ stub nvmlUnitSetLedState
-# @ stub nvmlVgpuInstanceClearAccountingPids
-# @ stub nvmlVgpuInstanceGetAccountingMode
-# @ stub nvmlVgpuInstanceGetAccountingPids
-# @ stub nvmlVgpuInstanceGetAccountingStats
-# @ stub nvmlVgpuInstanceGetEccMode
-# @ stub nvmlVgpuInstanceGetEncoderCapacity
-# @ stub nvmlVgpuInstanceGetEncoderSessions
-# @ stub nvmlVgpuInstanceGetEncoderStats
-# @ stub nvmlVgpuInstanceGetFBCSessions
-# @ stub nvmlVgpuInstanceGetFBCStats
-# @ stub nvmlVgpuInstanceGetFbUsage
-# @ stub nvmlVgpuInstanceGetFrameRateLimit
-# @ stub nvmlVgpuInstanceGetGpuInstanceId
-# @ stub nvmlVgpuInstanceGetLicenseStatus
-# @ stub nvmlVgpuInstanceGetMdevUUID
-# @ stub nvmlVgpuInstanceGetMetadata
-# @ stub nvmlVgpuInstanceGetType
-# @ stub nvmlVgpuInstanceGetUUID
-# @ stub nvmlVgpuInstanceGetVmDriverVersion
-# @ stub nvmlVgpuInstanceGetVmID
-# @ stub nvmlVgpuInstanceSetEncoderCapacity
-# @ stub nvmlVgpuTypeGetClass
-# @ stub nvmlVgpuTypeGetDeviceID
-# @ stub nvmlVgpuTypeGetFrameRateLimit
-# @ stub nvmlVgpuTypeGetFramebufferSize
-# @ stub nvmlVgpuTypeGetGpuInstanceProfileId
-# @ stub nvmlVgpuTypeGetLicense
-# @ stub nvmlVgpuTypeGetMaxInstances
-# @ stub nvmlVgpuTypeGetMaxInstancesPerVm
-# @ stub nvmlVgpuTypeGetName
-# @ stub nvmlVgpuTypeGetNumDisplayHeads
-# @ stub nvmlVgpuTypeGetResolution
+@ cdecl nvmlUnitGetCount(ptr)
+@ cdecl nvmlUnitGetDevices(ptr ptr ptr)
+@ cdecl nvmlUnitGetFanSpeedInfo(ptr ptr)
+@ cdecl nvmlUnitGetHandleByIndex(long ptr)
+@ cdecl nvmlUnitGetLedState(ptr ptr)
+@ cdecl nvmlUnitGetPsuInfo(ptr ptr)
+@ cdecl nvmlUnitGetTemperature(ptr long ptr)
+@ cdecl nvmlUnitGetUnitInfo(ptr ptr)
+@ cdecl nvmlUnitSetLedState(ptr ptr)
+@ cdecl nvmlVgpuInstanceClearAccountingPids(long)
+@ cdecl nvmlVgpuInstanceGetAccountingMode(long ptr)
+@ cdecl nvmlVgpuInstanceGetAccountingPids(long ptr ptr)
+@ cdecl nvmlVgpuInstanceGetAccountingStats(long long ptr)
+@ cdecl nvmlVgpuInstanceGetEccMode(long ptr)
+@ cdecl nvmlVgpuInstanceGetEncoderCapacity(long ptr)
+@ cdecl nvmlVgpuInstanceGetEncoderSessions(long ptr ptr)
+@ cdecl nvmlVgpuInstanceGetEncoderStats(long ptr ptr ptr)
+@ cdecl nvmlVgpuInstanceGetFBCSessions(long ptr ptr)
+@ cdecl nvmlVgpuInstanceGetFBCStats(long ptr)
+@ cdecl nvmlVgpuInstanceGetFbUsage(long ptr)
+@ cdecl nvmlVgpuInstanceGetFrameRateLimit(long ptr)
+@ cdecl nvmlVgpuInstanceGetGpuInstanceId(long ptr)
+@ cdecl nvmlVgpuInstanceGetLicenseStatus(long ptr)
+@ cdecl nvmlVgpuInstanceGetMdevUUID(long ptr long)
+@ cdecl nvmlVgpuInstanceGetMetadata(long ptr ptr)
+@ cdecl nvmlVgpuInstanceGetType(long ptr)
+@ cdecl nvmlVgpuInstanceGetUUID(long ptr long)
+@ cdecl nvmlVgpuInstanceGetVmDriverVersion(long ptr long)
+@ cdecl nvmlVgpuInstanceGetVmID(long ptr long ptr)
+@ cdecl nvmlVgpuInstanceSetEncoderCapacity(long long)
+@ cdecl nvmlVgpuTypeGetClass(long ptr long)
+@ cdecl nvmlVgpuTypeGetDeviceID(long ptr ptr)
+@ cdecl nvmlVgpuTypeGetFrameRateLimit(long ptr)
+@ cdecl nvmlVgpuTypeGetFramebufferSize(long ptr)
+@ cdecl nvmlVgpuTypeGetGpuInstanceProfileId(long ptr)
+@ cdecl nvmlVgpuTypeGetLicense(long ptr long)
+@ cdecl nvmlVgpuTypeGetMaxInstances(ptr long ptr)
+@ cdecl nvmlVgpuTypeGetMaxInstancesPerVm(long ptr)
+@ cdecl nvmlVgpuTypeGetName(long ptr long)
+@ cdecl nvmlVgpuTypeGetNumDisplayHeads(long ptr)
+@ cdecl nvmlVgpuTypeGetResolution(long long ptr ptr)
